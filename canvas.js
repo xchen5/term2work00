@@ -2,29 +2,33 @@ var c = document.getElementById("can");
 var ctx = c.getContext("2d");
 
 var counter = 0;
+var prevX;
+var prevY;
+
 var toCircle = function(e){
-    ctx.beginPath();
-    var x = e.clientX;
-    var y = e.clientY;
-    ctx.fillStyle= "red";
-    if (counter === 0){
-	ctx.arc(x,y,10,0,2 * Math.PI);
-	ctx.fill();
-	ctx.moveTo(x,y);
-	counter += 1;
-    }
-    else{
-	ctx.arc(x,y,10,0,2 * Math.PI);
-	ctx.fill();
-	ctx.lineTo(x,y);
-	ctx.stroke();
-	counter += 1;
-    }
+  ctx.beginPath();
+  var x = e.offsetX;
+  var y = e.offsetY;
+  ctx.fillStyle= "red";
+  ctx.arc(x,y,10,0,2 * Math.PI);
+  ctx.fill();
+  if (counter === 0){
+    prevX = x;
+    prevY = y;
+    counter += 1;
+  }
+  else{
+    ctx.moveTo(prevX, prevY);
+    prevX = x;
+    prevY = y;
+    ctx.lineTo(x,y);
+  }
+  ctx.stroke();
 };
 
 var toClear = function(e){
-    ctx.clearRect(0,0, 500,500);
-    counter
+  ctx.clearRect(0,0, 500,500);
+  counter = 0;
 };
 
 var clearButton = document.getElementById("clear");
